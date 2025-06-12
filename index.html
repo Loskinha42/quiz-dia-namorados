@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joguinho dia dos namorados</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Georgia', serif;
+    }
+
+    body {
+      background-color: #d6ebf5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #274472;
+    }
+
+    .question {
+      margin: 2rem 1rem 1rem;
+      font-size: 1.3rem;
+    }
+
+    .options button {
+      background-color: white;
+      border: 2px solid #274472;
+      color: #274472;
+      padding: 0.8rem 1.2rem;
+      margin: 0.5rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 200px;
+    }
+
+    .options button:hover:not(:disabled) {
+      background-color: #c2deed;
+    }
+
+    .correct {
+      background-color: #c0f2d8 !important;
+      border-color: #1e8c50 !important;
+      color: #1e8c50 !important;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      background-color: #f8c0c0 !important;
+      border-color: #d11a1a !important;
+      color: #d11a1a !important;
+      font-weight: bold;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-weight: bold;
+      min-height: 2rem;
+      color: #274472;
+      min-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .final-message {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      background-color: #ffffffcc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 90%;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: #274472;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Joguinho dia dos namorados</h1>
+
+  <div id="quiz">
+    <div class="question" id="question">Carregando pergunta...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div id="final" class="final-message hidden">
+    <h2>Mensagem Final 💙</h2>
+    <p id="mensagem-final">
+      <!-- Edite sua mensagem e versículo abaixo -->
+      Esse foi meu primeiro presente de Dia dos Namorados pra você. Vai ter outros, pode esperar! 💙<br>
+      “O amor é paciente, o amor é bondoso...” (1 Coríntios 13:4)
+    </p>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Qual meu capítulo favorito da Bíblia?",
+        correct: "Isaías 53",
+        wrong: ["Gênesis 29", "Romanos 8"],
+        feedbackCorrect: "Meu favorito, de longe.",
+        feedbackWrong: "Ixi, errou."
+      },
+      {
+        question: "Qual você disse ser o seu livro favorito da Bíblia?",
+        correct: "Timóteo",
+        wrong: ["Ezequiel", "João"],
+        feedbackCorrect: "Eles podem, você não...",
+        feedbackWrong: "Não é não kkkk."
+      },
+      {
+        question: "Qual primeiro versículo que te dediquei?",
+        correct: "Cânticos 4:1",
+        wrong: ["Cânticos 4:9", "Cânticos 4:7"],
+        feedbackCorrect: "Exato! (o \"spoiler\")",
+        feedbackWrong: "Do ladinho, mas foi esse não."
+      },
+      {
+        question: "Quando nos conhecemos?",
+        correct: "17/05/2025",
+        wrong: ["16/05/2025", "18/05/2025"],
+        feedbackCorrect: "Exatamente dia 17.",
+        feedbackWrong: "Quaaaaaaase."
+      },
+      {
+        question: "Qual você disse ser o seu louvor favorito?",
+        correct: "Até sozim - Marco Telles",
+        wrong: ["João 20 + Pra Sempre", "Colossenses - Marco Telles"],
+        feedbackCorrect: "Essa mesma. E as outras são boas também viu.",
+        feedbackWrong: "Não foi essa não kkkk."
+      },
+      {
+        question: "O que me agrada em você?",
+        correct: "Tudo",
+        wrong: ["O sorriso", "A fé"],
+        feedbackCorrect: ":)",
+        feedbackWrong: "Não é só isso, você sabe."
+      }
+    ];
+
+    let currentQuestion = 0;
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const feedbackEl = document.getElementById("feedback");
+    const finalEl = document.getElementById("final");
+    const quizEl = document.getElementById("quiz");
+
+    function shuffle(array) {
+      for(let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function loadQuestion() {
+      feedbackEl.textContent = "";
+      optionsEl.innerHTML = "";
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
+
+      const answers = shuffle([
+        { text: q.correct, correct: true },
+        { text: q.wrong[0], correct: false },
+        { text: q.wrong[1], correct: false }
+      ]);
+
+      answers.forEach(ans => {
+        const btn = document.createElement("button");
+        btn.textContent = ans.text;
+        btn.onclick = () => answerSelected(btn, ans.correct);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function answerSelected(button, isCorrect) {
+      Array.from(optionsEl.children).forEach(btn => btn.disabled = true);
+
+      if (isCorrect) {
+        button.classList.add("correct");
+        feedbackEl.textContent = quizData[currentQuestion].feedbackCorrect;
+      } else {
+        button.classList.add("incorrect");
+        feedbackEl.textContent = quizData[currentQuestion].feedbackWrong;
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+        } else {
+          quizEl.classList.add("hidden");
+          finalEl.classList.remove("hidden");
+        }
+      }, 1800);
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
