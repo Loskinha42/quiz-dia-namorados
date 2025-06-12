@@ -1,10 +1,11 @@
 * {
   box-sizing: border-box;
   font-family: 'Georgia', serif;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 body {
-  background-color: #d6ebf5;
+  background: linear-gradient(135deg, #d6ebf5, #a8d0e6);
   margin: 0;
   padding: 0;
   display: flex;
@@ -13,68 +14,93 @@ body {
   align-items: center;
   min-height: 100vh;
   text-align: center;
+  color: #274472;
 }
 
 h1, h2 {
-  color: #274472;
+  color: #1b2a47;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
 }
 
 .question {
   margin: 2rem 1rem 1rem;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .options button {
   background-color: white;
-  border: 2px solid #274472;
+  border: 2.5px solid #274472;
   color: #274472;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.5rem;
   margin: 0.5rem;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 200px;
+  min-width: 220px;
+  box-shadow: 0 4px 8px rgba(39,68,114, 0.1);
+  font-weight: 600;
+  user-select: none;
+  /* efeito hover */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
 }
 
 .options button:hover:not(:disabled) {
   background-color: #c2deed;
+  box-shadow: 0 6px 12px rgba(39,68,114, 0.25);
+  transform: translateY(-3px);
+}
+
+.options button:disabled {
+  cursor: default;
+  opacity: 0.7;
 }
 
 .correct {
   background-color: #c0f2d8 !important;
   border-color: #1e8c50 !important;
   color: #1e8c50 !important;
-  font-weight: bold;
+  font-weight: 700;
+  box-shadow: 0 0 15px #1e8c50aa !important;
+  transform: scale(1.05);
 }
 
 .incorrect {
   background-color: #f8c0c0 !important;
   border-color: #d11a1a !important;
   color: #d11a1a !important;
-  font-weight: bold;
+  font-weight: 700;
+  box-shadow: 0 0 15px #d11a1aaa !important;
+  transform: scale(1.05);
 }
 
 .feedback {
   margin-top: 1rem;
-  font-weight: bold;
-  min-height: 2rem;
+  font-weight: 700;
+  min-height: 2.2rem;
   color: #274472;
-  min-width: 300px;
+  min-width: 320px;
   margin-left: auto;
   margin-right: auto;
+  font-style: italic;
+  user-select: none;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
 }
 
 .final-message {
-  margin-top: 2rem;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  background-color: #ffffffcc;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 2.5rem;
+  padding: 1.5rem 2.5rem;
+  border-radius: 18px;
+  background-color: #ffffffdd;
+  box-shadow: 0 8px 18px rgba(39,68,114, 0.18);
   max-width: 90%;
-  font-size: 1.1rem;
-  line-height: 1.4;
+  font-size: 1.3rem;
+  line-height: 1.5;
   color: #274472;
+  font-weight: 600;
+  user-select: none;
 }
 
 .hidden {
